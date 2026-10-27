@@ -4,7 +4,7 @@ lesson:
   title: Trigonometry on the Unit Circle
   topic: Trigonometry — sine and cosine
   grade: "10"
-  language: English
+  language: en
   duration_minutes: 5
   aspect_ratio: "16:9"
   theme: midnight

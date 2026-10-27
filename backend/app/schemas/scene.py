@@ -169,7 +169,7 @@ Position = tuple[float, float]
 ValuePair = tuple[float, float]
 
 Color = Annotated[str, Field(pattern=r"^(navy|violet|ivory|white|black|gray|red|green|blue|amber|teal|pink|#[0-9a-fA-F]{6})$")]
-Label = Annotated[str, Field(min_length=1, max_length=40)]
+Label = Annotated[str, Field(min_length=0, max_length=40)]
 StrokeWidth = Annotated[float, Field(ge=1, le=12)]
 FillOpacity = Annotated[float, Field(ge=0, le=1)]
 ExpressionStr = Annotated[str, Field(min_length=1, max_length=120)]
@@ -227,7 +227,7 @@ class AngleParams(StrictModel):
 
 class TriangleParams(StrictModel):
     vertices: tuple[Position, Position, Position]
-    labels: list[Annotated[str, Field(min_length=1, max_length=40)]] = Field(
+    labels: list[Annotated[str, Field(min_length=0, max_length=40)]] = Field(
         default_factory=list, max_length=3
     )
     color: Color | None = None
@@ -245,7 +245,7 @@ class CircleParams(StrictModel):
 
 class PolygonParams(StrictModel):
     vertices: list[Position] = Field(min_length=3, max_length=12)
-    labels: list[Annotated[str, Field(min_length=1, max_length=40)]] = Field(
+    labels: list[Annotated[str, Field(min_length=0, max_length=40)]] = Field(
         default_factory=list, max_length=12
     )
     color: Color | None = None

@@ -4,7 +4,7 @@ lesson:
   title: The Graph of y = x²
   topic: Quadratic functions
   grade: "9"
-  language: English
+  language: en
   duration_minutes: 4
   aspect_ratio: "16:9"
   theme: midnight

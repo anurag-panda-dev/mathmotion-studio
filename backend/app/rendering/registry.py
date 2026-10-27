@@ -228,6 +228,8 @@ def _vertex_labels(vertices: list, labels: list[str], color: str) -> list[Text]:
     centroid = np.mean([vec(v) for v in vertices], axis=0)
     out: list[Text] = []
     for vertex, label in zip(vertices, labels, strict=False):
+        if not label:  # empty string = no label at this vertex (spec §6.1)
+            continue
         pos = vec(vertex)
         direction = pos - centroid
         norm = float(np.linalg.norm(direction))
@@ -445,7 +447,7 @@ def _build_number_line(params: dict, theme: Theme, frame: tuple[float, float, fl
             marker_color = PALETTE_HEX["violet"]
         dot = Dot([x, 0, 0], radius=0.09, color=marker_color)
         group.add(dot)
-        caption = marker.label if marker.label is not None else f"{marker.value:g}"
+        caption = marker.label if marker.label else f"{marker.value:g}"
         group.add(_label_text(caption, 22, marker_color).next_to(dot, UP, buff=0.15))
     if p.label:
         group.add(_label_text(p.label, 24, color).next_to(baseline, DOWN, buff=0.55))

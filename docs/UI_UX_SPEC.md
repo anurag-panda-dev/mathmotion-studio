@@ -156,7 +156,7 @@ Unless noted, every screen below is **planned only**. For each screen: purpose, 
 | Topic | **yes** | free text | — |
 | Class / grade level | **yes** | free text | — |
 | Subject / mathematical branch | no | free text | omitted from prompt |
-| Language of narration & explanations | no | language tag | `English` |
+| Language of narration & explanations | no | language tag | `en` |
 | Explanation style | no | `intuitive`, `step-by-step`, `visual proof`, `worked example`, `revision` | `intuitive` |
 | Target duration | no | integer, minutes | `5` |
 | Output aspect ratio | no | `16:9`, `9:16`, `1:1` | `16:9` |

@@ -75,11 +75,13 @@ def test_unsupported_schema_version():
 
 
 def test_language_full_name_is_valid():
-    """Generated files write the language in full (``English``), not as ``en``.
+    """Full names must keep validating even though codes are now generated.
 
-    The prompt template substitutes the teacher's input verbatim (default
-    ``English``), so full names are the common case and must validate.
-    BCP-47 tags stay valid for older files - see the tag test below.
+    The prompt templates request BCP-47 codes (``en``), but teachers
+    hand-write files and older generated files carry full names, and the
+    reference validator (tools/validate_scene.py) never checks language
+    style - parity requires accepting both forms exactly as the schema
+    pattern does.
     """
     text = _scene(
         "id: s1\ntitle: T\ntype: intro\nobjects: []\n"
@@ -111,6 +113,29 @@ def test_language_rejects_numeric_or_empty():
         report, _ = validate_source(text)
         assert not report.ok
         assert any(e.category == "schema" for e in report.errors)
+
+
+def test_empty_labels_mean_no_label():
+    """``label: ""`` / ``labels: ["", "", ""]`` are accepted as "draw no label".
+
+    External AIs naturally write empty strings to suppress triangle vertex
+    labels and angle markers; the schema accepts them and the renderer
+    skips them (spec 6.1). Omitting the field entirely stays equivalent.
+    """
+    text = _scene(
+        "id: s1\ntitle: T\ntype: intro\n"
+        "objects:\n"
+        "  - id: tri\n    kind: triangle\n    params:\n"
+        "      vertices: [[0, -1], [2, -1], [0, 0.5]]\n"
+        "      labels: ['', '', '']\n"
+        "  - id: ang\n    kind: angle\n    params:\n"
+        "      vertex: [0, -1]\n      start_angle: 0\n      end_angle: 90\n"
+        "      radius: 0.3\n      label: ''\n"
+        "actions:\n  - { action: wait, at: 0, duration: 1 }"
+    )
+    report, document = validate_source(text)
+    assert report.ok, [e.message for e in report.errors]
+    assert document is not None
 
 
 def test_duplicate_scene_id():

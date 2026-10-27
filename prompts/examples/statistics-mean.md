@@ -4,7 +4,7 @@ lesson:
   title: The Mean as a Balancing Point
   topic: Statistics — mean of a data set
   grade: "6"
-  language: English
+  language: en
   duration_minutes: 4
   aspect_ratio: "16:9"
   theme: midnight

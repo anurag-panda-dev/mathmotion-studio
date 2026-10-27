@@ -13,7 +13,7 @@
 | `{{TOPIC}}` | Mathematics topic | **yes** | — | 3–200 chars | Form blocks generation; no prompt is produced. |
 | `{{GRADE}}` | Class / grade level | **yes** | — | 1–24 chars | Form blocks generation. |
 | `{{BRANCH}}` | Subject area (algebra, geometry, …) | no | omitted from prompt | 1–60 chars | Sentence omitted; AI picks a natural branch. |
-| `{{LANGUAGE}}` | Language of narration and labels | no | `English` | Full language name (`English`, `Bengali`) or BCP-47 tag (`en`, `pt-BR`), 2-40 chars | Defaults to `English`; written into the front matter exactly as given. |
+| `{{LANGUAGE}}` | Language of narration and labels | no | `en` | Language name or BCP-47 tag (`English`, `en`, `pt-BR`), 2-40 chars — the AI converts it to the code in the front matter | Defaults to `en`; the front matter always receives the BCP-47 code (`en`, `de`, `pt-BR`), never the full name. |
 | `{{STYLE}}` | Explanation style | no | `intuitive` | one of `intuitive`, `step-by-step`, `visual proof`, `worked example`, `revision` | Defaults to `intuitive`. |
 | `{{DURATION}}` | Target duration (minutes) | no | `5` | integer 1–60 | Defaults to `5`. |
 | `{{ASPECT_RATIO}}` | Output aspect ratio | no | `16:9` | `16:9`, `9:16`, `1:1` | Defaults to `16:9`; written into the front matter. |
@@ -41,7 +41,7 @@ LESSON REQUIREMENTS (from the teacher)
 - Topic: {{TOPIC}}
 - Target students: grade {{GRADE}}, difficulty {{DIFFICULTY}}
 - Subject area: {{BRANCH}}
-- Language for every on-screen label and narration line: {{LANGUAGE}}
+- Language for every on-screen label and narration line: {{LANGUAGE}} — write it in the front matter as its BCP-47 code (English → en, Bengali → bn, Hindi → hi, pt-BR → pt-BR); never the full name
 - Explanation style: {{STYLE}}
 - Target duration: {{DURATION}} minutes (about 4–10 scenes)
 - Output aspect ratio: {{ASPECT_RATIO}}
@@ -85,7 +85,7 @@ lesson:
   title: "…"              # required, ≤140 chars
   topic: "…"              # required, ≤140 chars
   grade: "{{GRADE}}"      # required, must be quoted
-  language: "{{LANGUAGE}}"  # full name (English, Bengali) or tag (en, pt-BR) - 2-40 chars
+  language: "en"  # BCP-47 code of {{LANGUAGE}} (English → en, Bengali → bn, pt-BR → pt-BR) — never the full name — 2-40 chars
   duration_minutes: {{DURATION}}   # 1–60
   aspect_ratio: "{{ASPECT_RATIO}}" # "16:9" | "9:16" | "1:1"
   theme: midnight         # midnight (dark) | ivory (light)
@@ -143,6 +143,7 @@ SUPPORTED OBJECT KINDS (exactly these 19; params marked * are required)
 - area_fill: expression*, domain*, color, fill_opacity (requires axes)
 - number_line: range* (values −1000…1000), step, markers [{value, label?, color?}], color, label
 - fraction: numerator*, denominator*, font_size, color, position, label
+- Labels: omit label/labels when there is nothing to label - never write empty strings (an empty string is accepted but omitting the field is the clean form).
 
 SUPPORTED ACTIONS (exactly these 15; every action except wait needs target)
 - create: target, [at, duration] — one object id or an array of ids
@@ -195,9 +196,10 @@ SELF-VALIDATION BEFORE ANSWERING (silently)
 6. Scene durations are realistic for the narration; total runtime ≈ {{DURATION}} minutes.
 7. The mathematics is correct at {{GRADE}} level; objectives, recap, practice match the content.
 8. No code, no invented fields, no markdown fence around the file.
-9. Recited narration reads naturally in {{LANGUAGE}}.
+9. Recited narration reads naturally in {{LANGUAGE}}; the front-matter language field is that language's BCP-47 code (en, not English).
 10. The file is complete from --- to the final ```.
 11. Every formula object carries renderer: auto, unless the teacher explicitly requested renderer: latex or renderer: text.
+12. label/labels are omitted whenever there is nothing to label; no empty label strings are written.
 
 NOW OUTPUT THE COMPLETE scene.md FILE, AND NOTHING ELSE.
 The first line of your reply must be exactly --- (the front-matter opener) and the last line must be the closing ``` of the final scene block. Do not prefix the file with a greeting or "Here is your scene.md", and do not wrap it in ```markdown or any other fence - the file alone is the reply.

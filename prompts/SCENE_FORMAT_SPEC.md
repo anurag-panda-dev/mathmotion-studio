@@ -52,7 +52,7 @@ lesson:
   title: The Pythagorean Theorem
   topic: Pythagorean theorem
   grade: "8"
-  language: English
+  language: en
   duration_minutes: 5
   aspect_ratio: "16:9"
   theme: midnight
@@ -84,7 +84,7 @@ verification:
 | `lesson.title` | yes | string | — | 1–140 characters. |
 | `lesson.topic` | yes | string | — | 1–140 characters; the mathematics topic. |
 | `lesson.grade` | yes | string | — | 1–24 characters, e.g. `"8"` or `"11–12"`. Quoted to avoid YAML number coercion. |
-| `lesson.language` | yes | string | — | Full language name (`English`, `Bengali`, `Portuguese (Brazil)`) or BCP-47 tag (`en`, `de`, `pt-BR`); matches `^(?:[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?\|[^0-9\s][^0-9]{1,39})$`, 2–40 characters. Full names are the recommended style — write the name exactly as the teacher entered it. Used for narration text and labels; the renderer does not translate content. |
+| `lesson.language` | yes | string | — | BCP-47 tag (`en`, `de`, `pt-BR`) or full language name (`English`, `Bengali`, `Portuguese (Brazil)`); matches `^(?:[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?\|[^0-9\s][^0-9]{1,39})$`, 2–40 characters. BCP-47 tags are the recommended style — the prompt generator writes codes; full names remain valid for teacher-entered files. Used for narration text and labels; the renderer does not translate content. |
 | `lesson.duration_minutes` | no | number | `5` | 1–60. Target lesson length; advisory, not enforced. |
 | `lesson.aspect_ratio` | no | string | `"16:9"` | One of `"16:9"`, `"9:16"`, `"1:1"`. |
 | `lesson.theme` | no | string | `"midnight"` | One of `midnight` (dark background, light ink) or `ivory` (light background, dark ink). |
@@ -238,22 +238,24 @@ Two fields that apply to every kind via `params`: `color` (palette name or `#RRG
 | `text` | **`content`** (1–200 chars), `font_size` (16–120), `color`, `position` | size 36, color = theme ink, position `[0, 0]` | Plain text label. |
 | `formula` | **`content`** (1–200 chars), `renderer` (`auto`/`text`/`latex`), `font_size` (16–96), `color`, `position` | renderer `auto`, size 44 | `auto` uses LaTeX typography when installed, otherwise the plain-text fallback (see [`docs/INSTALLATION.md`](../docs/INSTALLATION.md)). |
 | `equation` | **`content`** (1–200 chars, must contain `=`), `font_size` (16–96), `color`, `position` | size 40 | A single equation line; step-by-step solving uses several `equation` objects plus `transform`/`arrange`. |
-| `point` | **`position`**, `radius` (0.05–0.5), `color`, `label` (1–12), `label_direction` (`up`/`down`/`left`/`right`) | radius 0.12, color violet, label none, direction `up` | |
-| `segment` | **`start`**, **`end`**, `color`, `stroke_width` (1–12), `label` (1–12) | color = theme ink, width 4 | |
+| `point` | **`position`**, `radius` (0.05–0.5), `color`, `label` (0–12), `label_direction` (`up`/`down`/`left`/`right`) | radius 0.12, color violet, label none, direction `up` | |
+| `segment` | **`start`**, **`end`**, `color`, `stroke_width` (1–12), `label` (0–12) | color = theme ink, width 4 | |
 | `line` | **`start`**, **`end`**, `color`, `stroke_width`, `label` | color = theme ink, width 3 | Infinite line through the two points, clipped to the frame. |
 | `ray` | **`start`**, **`end`**, `color`, `stroke_width`, `label` | color = theme ink, width 3 | |
-| `angle` | **`vertex`**, **`start_angle`** (degrees), **`end_angle`** (degrees), `radius` (0.2–2), `color`, `label` (1–12) | radius 0.8, color violet | Angle arc drawn at `vertex` from `start_angle` to `end_angle` (counter-clockwise, degrees). |
+| `angle` | **`vertex`**, **`start_angle`** (degrees), **`end_angle`** (degrees), `radius` (0.2–2), `color`, `label` (0–12) | radius 0.8, color violet | Angle arc drawn at `vertex` from `start_angle` to `end_angle` (counter-clockwise, degrees). |
 | `triangle` | **`vertices`** (exactly 3 `[x, y]`), `labels` (0–3 strings), `color`, `fill_opacity` (0–1), `stroke_width` | fill 0, width 4 | |
 | `circle` | **`center`**, **`radius`** (0.1–10), `color`, `fill_opacity`, `stroke_width` | fill 0, width 4 | |
 | `polygon` | **`vertices`** (3–12 `[x, y]`), `color`, `fill_opacity`, `stroke_width`, `labels` (0–n strings) | fill 0, width 4 | Closed polygon. |
 | `square` | **`origin`** (center), **`side`** (0.1–10), `angle` (degrees), `color`, `fill_opacity`, `stroke_width` | angle 0, fill 0, width 4 | |
 | `rectangle` | **`origin`** (center), **`width`** (0.1–12), **`height`** (0.1–12), `angle`, `color`, `fill_opacity`, `stroke_width` | angle 0, fill 0, width 4 | |
 | `vector` | **`start`**, **`end`**, `color`, `stroke_width`, `label` | color violet, width 4 | Directed arrow. |
-| `axes` | `x_range` (pair, −20…20), `y_range` (pair, −20…20), `grid` (bool), `include_numbers` (bool), `x_label` (1–24), `y_label` (1–24) | x `[-7, 7]`, y `[-4, 4]`, grid false, numbers true | Cartesian axes; the coordinate frame for `function_graph`. |
+| `axes` | `x_range` (pair, −20…20), `y_range` (pair, −20…20), `grid` (bool), `include_numbers` (bool), `x_label` (0–24), `y_label` (0–24) | x `[-7, 7]`, y `[-4, 4]`, grid false, numbers true | Cartesian axes; the coordinate frame for `function_graph`. |
 | `function_graph` | **`expression`** (§7 grammar, 1–120 chars), `domain` (pair), `color`, `stroke_width`, `samples` (20–2000) | domain `[-7, 7]` clipped to the axes range, color violet, width 4, samples 400 | Plotted against the scene's `axes` object; requires an `axes` object in the same scene. |
 | `area_fill` | **`expression`**, **`domain`** (pair), `color`, `fill_opacity` (0–1) | color violet, opacity 0.35 | Shaded area between a function and the x-axis over `domain`. Requires `axes`. |
-| `number_line` | **`range`** (value pair, −1000…1000), `step` (0.05–100), `markers` (0–12 of `{value, label?, color?}`), `color`, `label` (1–40) | step 1, color = theme ink | Horizontal number line over a range of *values* (not scene coordinates); markers highlight values. |
-| `fraction` | **`numerator`** (1–12 chars), **`denominator`** (1–12 chars), `font_size` (16–120), `color`, `position`, `label` (1–40) | size 48, position `[0, 0]` | Stacked fraction with a fraction bar. |
+| `number_line` | **`range`** (value pair, −1000…1000), `step` (0.05–100), `markers` (0–12 of `{value, label?, color?}`), `color`, `label` (0–40) | step 1, color = theme ink | Horizontal number line over a range of *values* (not scene coordinates); markers highlight values. |
+| `fraction` | **`numerator`** (1–12 chars), **`denominator`** (1–12 chars), `font_size` (16–120), `color`, `position`, `label` (0–40) | size 48, position `[0, 0]` | Stacked fraction with a fraction bar. |
+
+**Labels:** every `label` and `labels` parameter accepts an **empty string**, which means *no label is drawn* — the renderer skips it; omitting the field behaves identically. When a scene needs no labels, prefer omitting `label`/`labels` entirely over writing empty strings.
 
 Kinds planned for a later minor version (rejected in v1.0 with a helpful error, never silently ignored): `area_model`, `ratio_diagram`, `inequality_region`, `secant_line`, `tangent_line`, `slider`, `parametric_graph`, `latex_block`, `image`, `voiceover_clip`. See [`docs/ROADMAP.md`](../docs/ROADMAP.md).
 

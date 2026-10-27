@@ -56,7 +56,7 @@ Validated against [`lesson-metadata-v1.schema.json`](../schema/lesson-metadata-v
 | `title` | yes | string, 1–140 chars | — |
 | `topic` | yes | string, 1–140 chars | — |
 | `grade` | yes | string, 1–24 chars (e.g. `"8"`, `"11–12"`) | — |
-| `language` | yes | Full language name (`English`, `Bengali`) or BCP-47 tag matching `^(?:[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?\|[^0-9\s][^0-9]{1,39})$` (`en`, `de`, `pt-BR`), 2-40 characters | — |
+| `language` | yes | BCP-47 tag matching `^(?:[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?\|[^0-9\s][^0-9]{1,39})$` (`en`, `de`, `pt-BR`) or full language name (`English`, `Bengali`), 2-40 characters | — |
 | `duration_minutes` | no | number, 1–60 | `5` |
 | `aspect_ratio` | no | `"16:9"` \| `"9:16"` \| `"1:1"` | `"16:9"` |
 | `theme` | no | `midnight` \| `ivory` | `midnight` |
@@ -88,7 +88,7 @@ lesson:
   title: The Pythagorean Theorem
   topic: Pythagorean theorem
   grade: "8"
-  language: English
+  language: en
   duration_minutes: 5
   aspect_ratio: "16:9"
   theme: midnight
@@ -132,7 +132,7 @@ Validated against [`scene-v1.schema.json`](../schema/scene-v1.schema.json). Each
 
 ### 4.2 Object kinds — 19 kinds with per-kind parameters
 
-Every object requires `id` and `kind`; `params` is kind-specific (`additionalProperties: false` per kind via conditional schema). Shared parameter vocabulary: `position`/`start`/`end`/`vertex`/`center`/`origin`/`to` are `[x, y]` scene coordinates (each −50…50); `color` is a palette name (`navy`, `violet`, `ivory`, `white`, `black`, `gray`, `red`, `green`, `blue`, `amber`, `teal`, `pink`) or `#RRGGBB`; `stroke_width` 1–12; `fill_opacity` 0–1; `font_size` 16–120; `label` 1–40 chars.
+Every object requires `id` and `kind`; `params` is kind-specific (`additionalProperties: false` per kind via conditional schema). Shared parameter vocabulary: `position`/`start`/`end`/`vertex`/`center`/`origin`/`to` are `[x, y]` scene coordinates (each −50…50); `color` is a palette name (`navy`, `violet`, `ivory`, `white`, `black`, `gray`, `red`, `green`, `blue`, `amber`, `teal`, `pink`) or `#RRGGBB`; `stroke_width` 1–12; `fill_opacity` 0–1; `font_size` 16–120; `label` 0-40 chars (empty string or omitted = no label drawn).
 
 | Kind | Required params | Optional params (constraints / defaults) |
 |---|---|---|

@@ -4,7 +4,7 @@ lesson:
   title: What Is a Derivative?
   topic: Derivatives — the slope of a curve
   grade: "11"
-  language: English
+  language: en
   duration_minutes: 5
   aspect_ratio: "16:9"
   theme: midnight

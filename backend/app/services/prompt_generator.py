@@ -70,7 +70,7 @@ class PromptInputs:
     topic: str
     grade: str
     branch: str | None = None
-    language: str = "English"
+    language: str = "en"
     style: str = "intuitive"
     duration: int = 5
     aspect_ratio: str = "16:9"

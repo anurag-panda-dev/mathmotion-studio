@@ -95,6 +95,40 @@ def test_prompt_animation_quality_section(settings):
         assert "Pace to the voice" in prompt
 
 
+def test_prompt_language_written_as_bcp47_code(settings):
+    """Front matter asks for the BCP-47 code, never the full name.
+
+    Field report: generated scene.md wrote ``language: English``. The
+    front-matter example must print a literal code (``en``) with a
+    conversion rule - it must not substitute the teacher's raw value
+    there, because printing the raw value is exactly what previously
+    produced output that failed validation (docs/CHANGELOG.md). Both
+    the full and compact variants must carry the rule.
+    """
+    out = generate_prompt(_inputs(), settings)
+    for prompt in (out["prompt"], out["compact_prompt"]):
+        assert 'language: "en"' in prompt
+        assert 'language: "English"' not in prompt
+        assert "BCP-47 code of en" in prompt
+        assert "never the full name" in prompt
+
+
+def test_prompt_language_converts_teacher_full_name(settings):
+    """A teacher who types ``Bengali`` still gets code output instructions.
+
+    The teacher's words stay in the requirements (they guide narration),
+    while the front-matter example remains the literal code and names the
+    teacher's language in the conversion rule.
+    """
+    out = generate_prompt(_inputs(language="Bengali"), settings)
+    for prompt in (out["prompt"], out["compact_prompt"]):
+        assert "Bengali" in prompt
+        assert 'language: "en"' in prompt
+        assert "BCP-47 code of Bengali" in prompt
+        assert "Bengali → bn" in prompt
+        assert 'language: "Bengali"' not in prompt
+
+
 def test_build_compact_collapses_reference_sections():
     full = (
         "SUPPORTED OBJECT KINDS\n"

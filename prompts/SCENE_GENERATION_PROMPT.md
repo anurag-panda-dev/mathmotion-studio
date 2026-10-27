@@ -17,7 +17,7 @@ A complete, standalone prompt for generating a new `scene.md` from a mathematics
 INPUT — replace the values before sending
   Topic:            <e.g. solving linear equations by balancing>
   Grade / class:    <e.g. 7>
-  Language:         <e.g. English>
+  Language:         <e.g. en>
   Explanation style:<intuitive | step-by-step | visual proof | worked example | revision>
   Duration (min):   <e.g. 5>
   Aspect ratio:     <16:9 | 9:16 | 1:1>
@@ -60,7 +60,7 @@ VISUAL AND ANIMATION GUIDANCE
 
 SCENE FORMAT RESTRICTIONS (v1.0 — the file is data, never code)
 - Structure: YAML front matter first (lines `---` … `---`), optional teacher-facing prose, then one fenced block per scene using ```scene … ```.
-- Front matter: schema_version "1.0"; lesson {title, topic, grade, language, duration_minutes, aspect_ratio, theme}; objectives; prerequisites; optional recap; optional practice_questions; optional verification. Unknown keys are rejected. Quote any value containing `:`, `#`, or that could parse as a number/boolean (always quote grade). Write `language` as the full language name exactly as given in INPUT (e.g. `English`, `Bengali`) — not a code like `en` — 2-40 characters.
+- Front matter: schema_version "1.0"; lesson {title, topic, grade, language, duration_minutes, aspect_ratio, theme}; objectives; prerequisites; optional recap; optional practice_questions; optional verification. Unknown keys are rejected. Quote any value containing `:`, `#`, or that could parse as a number/boolean (always quote grade). Write `language` as the BCP-47 code for the INPUT language (`English` → `en`, `Bengali` → `bn`, `Portuguese (Brazil)` → `pt-BR`) — never the full name — 2-40 characters.
 - Scene block: id (`^[a-z][a-z0-9_-]{0,39}$`, unique), title, type (intro | explanation | worked_example | proof | recap | practice), optional duration, optional narration, objects, actions.
 - Object kinds — exactly these 19 (* = required param):
   text: content* ; formula: content*, renderer (auto|text|latex, use auto) ; equation: content* (contains =) ;
@@ -74,7 +74,7 @@ SCENE FORMAT RESTRICTIONS (v1.0 — the file is data, never code)
   area_fill: expression*, domain* (requires axes) ;
   number_line: range* (values −1000…1000), step, markers ;
   fraction: numerator*, denominator*.
-  Common: id, kind, params{color, position where applicable}.
+  Common: id, kind, params{color, position where applicable}. Omit `label`/`labels` when there is nothing to label - never write empty strings.
 - Renderer: every `formula` uses `renderer: auto` — it uses LaTeX typography when LaTeX is installed and degrades to plain text when it is not, so the file renders on any machine. Write `renderer: latex` only when INPUT explicitly requires LaTeX typography, and `renderer: text` only when INPUT asks for plain text.
 - Actions — exactly these 15: create, write, fade_in, fade_out, transform (target, into), move (target, to), rotate (target, degrees), scale (target, factor), indicate (style: pulse|highlight|underline), circumscribe, draw_border, recolor (color), wait, arrange (target array, layout row|column|grid), reveal (target array, interval). Every action except wait needs `target`; unknown fields are rejected.
 - Colors: navy, violet, ivory, white, black, gray, red, green, blue, amber, teal, pink — or #RRGGBB.
@@ -95,7 +95,7 @@ FINAL SELF-VALIDATION CHECKLIST (run silently before answering)
 4. Graph/area scenes contain `axes`; all expressions use only allowed names; colors are palette names or #RRGGBB; positions are inside the frame for the INPUT aspect ratio.
 5. Durations and `at` timings fit each scene's narration; total runtime ≈ INPUT duration.
 6. The mathematics is correct for INPUT grade level; objectives/recap/practice match the content; verification assertions (if present) have genuine methods.
-7. Labels are readable, uncluttered, non-overlapping; no unsupported instructions anywhere.
+7. Labels are readable, uncluttered, non-overlapping; `label`/`labels` are omitted when there is no label to draw (never empty strings); no unsupported instructions anywhere.
 8. The response is the bare file — no fence, no commentary.
 9. Every `formula` carries `renderer: auto` (not `latex`) unless INPUT explicitly requested LaTeX or plain text.
 

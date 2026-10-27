@@ -73,7 +73,7 @@ class PromptRequest(StrictRequest):
     topic: str = Field(min_length=3, max_length=200)
     grade: str = Field(min_length=1, max_length=24)
     branch: str | None = Field(default=None, max_length=60)
-    language: str = Field(default="English", min_length=2, max_length=40)
+    language: str = Field(default="en", min_length=2, max_length=40)
     style: ExplanationStyle = "intuitive"
     duration: int = Field(default=5, ge=1, le=60)
     aspect_ratio: AspectRatio = "16:9"
@@ -270,7 +270,7 @@ class AppSettingsModel(BaseModel):
     default_quality: Quality = "standard"
     default_aspect_ratio: AspectRatio = "16:9"
     theme: Literal["light", "dark", "system"] = "system"
-    language: str = "English"
+    language: str = "en"
 
 
 class AppSettingsPatch(StrictRequest):

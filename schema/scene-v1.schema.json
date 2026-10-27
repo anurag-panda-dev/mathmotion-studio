@@ -54,7 +54,7 @@
       "description": "A range of *values* (e.g. a number line from 0 to 360), as opposed to scene coordinates."
     },
     "color": { "type": "string", "pattern": "^(navy|violet|ivory|white|black|gray|red|green|blue|amber|teal|pink|#[0-9a-fA-F]{6})$" },
-    "label": { "type": "string", "minLength": 1, "maxLength": 40 },
+    "label": { "type": "string", "maxLength": 40, "description": "0-40 chars; an empty string (or an omitted field) means no label is drawn." },
     "expression": {
       "type": "string",
       "minLength": 1,

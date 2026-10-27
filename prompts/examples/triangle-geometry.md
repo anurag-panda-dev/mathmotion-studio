@@ -4,7 +4,7 @@ lesson:
   title: The Sum of Angles in a Triangle
   topic: Triangle geometry
   grade: "8"
-  language: English
+  language: en
   duration_minutes: 4
   aspect_ratio: "16:9"
   theme: midnight
