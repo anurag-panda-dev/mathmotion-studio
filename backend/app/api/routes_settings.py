@@ -24,7 +24,7 @@ def _current(db: Database, settings: Settings) -> dict:
         "default_quality": stored.get("default_quality", "standard"),
         "default_aspect_ratio": stored.get("default_aspect_ratio", "16:9"),
         "theme": stored.get("theme", "system"),
-        "language": stored.get("language", "en"),
+        "language": stored.get("language", "English"),
     }
 
 

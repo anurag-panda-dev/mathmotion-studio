@@ -52,7 +52,7 @@ lesson:
   title: The Pythagorean Theorem
   topic: Pythagorean theorem
   grade: "8"
-  language: en
+  language: English
   duration_minutes: 5
   aspect_ratio: "16:9"
   theme: midnight
@@ -84,7 +84,7 @@ verification:
 | `lesson.title` | yes | string | — | 1–140 characters. |
 | `lesson.topic` | yes | string | — | 1–140 characters; the mathematics topic. |
 | `lesson.grade` | yes | string | — | 1–24 characters, e.g. `"8"` or `"11–12"`. Quoted to avoid YAML number coercion. |
-| `lesson.language` | yes | string | — | BCP-47-style tag: `en`, `de`, `pt-BR`. 2–10 characters. Used for narration text and labels; the renderer does not translate content. |
+| `lesson.language` | yes | string | — | Full language name (`English`, `Bengali`, `Portuguese (Brazil)`) or BCP-47 tag (`en`, `de`, `pt-BR`); matches `^(?:[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?\|[^0-9\s][^0-9]{1,39})$`, 2–40 characters. Full names are the recommended style — write the name exactly as the teacher entered it. Used for narration text and labels; the renderer does not translate content. |
 | `lesson.duration_minutes` | no | number | `5` | 1–60. Target lesson length; advisory, not enforced. |
 | `lesson.aspect_ratio` | no | string | `"16:9"` | One of `"16:9"`, `"9:16"`, `"1:1"`. |
 | `lesson.theme` | no | string | `"midnight"` | One of `midnight` (dark background, light ink) or `ivory` (light background, dark ink). |

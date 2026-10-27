@@ -74,6 +74,45 @@ def test_unsupported_schema_version():
     assert any(e.category == "schema_version" for e in report.errors)
 
 
+def test_language_full_name_is_valid():
+    """Generated files write the language in full (``English``), not as ``en``.
+
+    The prompt template substitutes the teacher's input verbatim (default
+    ``English``), so full names are the common case and must validate.
+    BCP-47 tags stay valid for older files - see the tag test below.
+    """
+    text = _scene(
+        "id: s1\ntitle: T\ntype: intro\nobjects: []\n"
+        "actions:\n  - { action: wait, at: 0, duration: 1 }"
+    ).replace("language: en", "language: English")
+    report, document = validate_source(text)
+    assert report.ok, [e.message for e in report.errors]
+    assert document is not None
+
+
+def test_language_bcp47_tag_still_valid():
+    """Tags (``en``, ``pt-BR``) remain valid - older scene.md files must import."""
+    text = _scene(
+        "id: s1\ntitle: T\ntype: intro\nobjects: []\n"
+        "actions:\n  - { action: wait, at: 0, duration: 1 }"
+    )
+    report, document = validate_source(text)
+    assert report.ok, [e.message for e in report.errors]
+    assert document is not None
+
+
+def test_language_rejects_numeric_or_empty():
+    """A missing or non-language value is a schema error, never a crash."""
+    for bad in ("12", ""):
+        text = _scene(
+            "id: s1\ntitle: T\ntype: intro\nobjects: []\n"
+            "actions:\n  - { action: wait, at: 0, duration: 1 }"
+        ).replace("language: en", f"language: '{bad}'")
+        report, _ = validate_source(text)
+        assert not report.ok
+        assert any(e.category == "schema" for e in report.errors)
+
+
 def test_duplicate_scene_id():
     text = (
         "---\nschema_version: '1.0'\nlesson:\n  title: T\n  topic: t\n"

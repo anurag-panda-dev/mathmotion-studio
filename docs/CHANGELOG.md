@@ -12,6 +12,10 @@ Versioning note: the Scene format documents itself as **v1.0** using MAJOR.MINOR
 
 ## [Unreleased]
 
+### Scene format — changed (backward compatible)
+
+- **Changed** — `lesson.language` now accepts the **full language name** (`English`, `Bengali`, `Portuguese (Brazil)`) as well as a BCP-47 tag (`en`, `de`, `pt-BR`), 2–40 characters. The prompt templates and all nine example lessons now write the full name exactly as the teacher entered it; previously the templates requested a tag while the prompt substituted `English`, so generated files failed validation. Existing tag-based files remain valid. ([`schema/lesson-metadata-v1.schema.json`](../schema/lesson-metadata-v1.schema.json), [`prompts/SCENE_FORMAT_SPEC.md`](../prompts/SCENE_FORMAT_SPEC.md) §3)
+
 ### MathMotion Studio application — planned, not implemented
 
 No application code has been written; nothing in this section exists in the repository. These entries describe the intended first application release and are labelled **Planned** so they can never be mistaken for shipped work. They map to milestones [M1–M10 in ROADMAP.md](ROADMAP.md#roadmap-overview).

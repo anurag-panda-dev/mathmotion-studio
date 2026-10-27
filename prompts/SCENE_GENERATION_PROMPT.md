@@ -60,7 +60,7 @@ VISUAL AND ANIMATION GUIDANCE
 
 SCENE FORMAT RESTRICTIONS (v1.0 — the file is data, never code)
 - Structure: YAML front matter first (lines `---` … `---`), optional teacher-facing prose, then one fenced block per scene using ```scene … ```.
-- Front matter: schema_version "1.0"; lesson {title, topic, grade, language, duration_minutes, aspect_ratio, theme}; objectives; prerequisites; optional recap; optional practice_questions; optional verification. Unknown keys are rejected. Quote any value containing `:`, `#`, or that could parse as a number/boolean (always quote grade).
+- Front matter: schema_version "1.0"; lesson {title, topic, grade, language, duration_minutes, aspect_ratio, theme}; objectives; prerequisites; optional recap; optional practice_questions; optional verification. Unknown keys are rejected. Quote any value containing `:`, `#`, or that could parse as a number/boolean (always quote grade). Write `language` as the full language name exactly as given in INPUT (e.g. `English`, `Bengali`) — not a code like `en` — 2-40 characters.
 - Scene block: id (`^[a-z][a-z0-9_-]{0,39}$`, unique), title, type (intro | explanation | worked_example | proof | recap | practice), optional duration, optional narration, objects, actions.
 - Object kinds — exactly these 19 (* = required param):
   text: content* ; formula: content*, renderer ; equation: content* (contains =) ;

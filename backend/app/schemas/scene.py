@@ -124,7 +124,14 @@ class LessonInfo(StrictModel):
     title: Annotated[str, Field(min_length=1, max_length=140)]
     topic: Annotated[str, Field(min_length=1, max_length=140)]
     grade: Annotated[str, Field(min_length=1, max_length=24)]
-    language: Annotated[str, Field(pattern=r"^[a-z]{2,3}(-[A-Za-z0-9]{2,8})?$")]
+    language: Annotated[
+        str,
+        Field(
+            min_length=2,
+            max_length=40,
+            pattern=r"^(?:[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?|[^0-9\s][^0-9]{1,39})$",
+        ),
+    ]
     duration_minutes: Annotated[float, Field(ge=1, le=60)] = 5
     aspect_ratio: AspectRatio = "16:9"
     theme: Theme = "midnight"

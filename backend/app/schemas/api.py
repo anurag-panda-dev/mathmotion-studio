@@ -270,7 +270,7 @@ class AppSettingsModel(BaseModel):
     default_quality: Quality = "standard"
     default_aspect_ratio: AspectRatio = "16:9"
     theme: Literal["light", "dark", "system"] = "system"
-    language: str = "en"
+    language: str = "English"
 
 
 class AppSettingsPatch(StrictRequest):
@@ -278,7 +278,7 @@ class AppSettingsPatch(StrictRequest):
     default_quality: Quality | None = None
     default_aspect_ratio: AspectRatio | None = None
     theme: Literal["light", "dark", "system"] | None = None
-    language: str | None = Field(default=None, min_length=2, max_length=10)
+    language: str | None = Field(default=None, min_length=2, max_length=40)
 
 
 # ---------------------------------------------------------------------------

@@ -13,7 +13,7 @@
 | `{{TOPIC}}` | Mathematics topic | **yes** | — | 3–200 chars | Form blocks generation; no prompt is produced. |
 | `{{GRADE}}` | Class / grade level | **yes** | — | 1–24 chars | Form blocks generation. |
 | `{{BRANCH}}` | Subject area (algebra, geometry, …) | no | omitted from prompt | 1–60 chars | Sentence omitted; AI picks a natural branch. |
-| `{{LANGUAGE}}` | Language of narration and labels | no | `English` | BCP-47-ish tag, 2–10 chars | Defaults to `English`. |
+| `{{LANGUAGE}}` | Language of narration and labels | no | `English` | Full language name (`English`, `Bengali`) or BCP-47 tag (`en`, `pt-BR`), 2-40 chars | Defaults to `English`; written into the front matter exactly as given. |
 | `{{STYLE}}` | Explanation style | no | `intuitive` | one of `intuitive`, `step-by-step`, `visual proof`, `worked example`, `revision` | Defaults to `intuitive`. |
 | `{{DURATION}}` | Target duration (minutes) | no | `5` | integer 1–60 | Defaults to `5`. |
 | `{{ASPECT_RATIO}}` | Output aspect ratio | no | `16:9` | `16:9`, `9:16`, `1:1` | Defaults to `16:9`; written into the front matter. |
@@ -84,7 +84,7 @@ lesson:
   title: "…"              # required, ≤140 chars
   topic: "…"              # required, ≤140 chars
   grade: "{{GRADE}}"      # required, must be quoted
-  language: "{{LANGUAGE}}"  # e.g. en, de, pt-BR
+  language: "{{LANGUAGE}}"  # full name (English, Bengali) or tag (en, pt-BR) - 2-40 chars
   duration_minutes: {{DURATION}}   # 1–60
   aspect_ratio: "{{ASPECT_RATIO}}" # "16:9" | "9:16" | "1:1"
   theme: midnight         # midnight (dark) | ivory (light)

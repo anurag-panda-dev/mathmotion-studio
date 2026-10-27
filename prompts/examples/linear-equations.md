@@ -4,7 +4,7 @@ lesson:
   title: Straight-Line Graphs — y = 2x + 1
   topic: Straight-line graphs
   grade: "9"
-  language: en
+  language: English
   duration_minutes: 4
   aspect_ratio: "16:9"
   theme: midnight

@@ -4,7 +4,7 @@ lesson:
   title: The Pythagorean Theorem
   topic: Pythagorean theorem
   grade: "8"
-  language: en
+  language: English
   duration_minutes: 5
   aspect_ratio: "16:9"
   theme: midnight

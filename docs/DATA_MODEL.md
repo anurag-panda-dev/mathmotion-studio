@@ -56,7 +56,7 @@ Validated against [`lesson-metadata-v1.schema.json`](../schema/lesson-metadata-v
 | `title` | yes | string, 1–140 chars | — |
 | `topic` | yes | string, 1–140 chars | — |
 | `grade` | yes | string, 1–24 chars (e.g. `"8"`, `"11–12"`) | — |
-| `language` | yes | BCP-47-style tag matching `^[a-z]{2,3}(-[A-Za-z0-9]{2,8})?$` (`en`, `de`, `pt-BR`) | — |
+| `language` | yes | Full language name (`English`, `Bengali`) or BCP-47 tag matching `^(?:[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})?\|[^0-9\s][^0-9]{1,39})$` (`en`, `de`, `pt-BR`), 2-40 characters | — |
 | `duration_minutes` | no | number, 1–60 | `5` |
 | `aspect_ratio` | no | `"16:9"` \| `"9:16"` \| `"1:1"` | `"16:9"` |
 | `theme` | no | `midnight` \| `ivory` | `midnight` |
@@ -88,7 +88,7 @@ lesson:
   title: The Pythagorean Theorem
   topic: Pythagorean theorem
   grade: "8"
-  language: en
+  language: English
   duration_minutes: 5
   aspect_ratio: "16:9"
   theme: midnight

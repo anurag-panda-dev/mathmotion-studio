@@ -187,7 +187,7 @@ Additional components:
 **Validation rules (from the implemented template):**
 - Topic: required, 3–200 characters; generation is blocked when empty/invalid.
 - Grade: required, 1–24 characters; generation blocked when empty/invalid.
-- Optional fields follow the template's documented lengths (branch 1–60; language 2–10; additional instructions 0–1000).
+- Optional fields follow the template's documented lengths (branch 1–60; language 2–40; additional instructions 0–1000).
 - Invalid values are explained in the teacher's words; the form never silently substitutes values.
 
 **Accessibility:** every field has a persistent visible label; errors are associated with their fields and summarized at the top of the form; the prompt preview is a properly labeled region; Copy Prompt uses a real `<button>`; success notification announced via live region; Reset Form requires confirmation if the form is dirty.

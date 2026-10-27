@@ -4,7 +4,7 @@ lesson:
   title: The Area of a Circle
   topic: Area of a circle
   grade: "7"
-  language: en
+  language: English
   duration_minutes: 4
   aspect_ratio: "16:9"
   theme: midnight
