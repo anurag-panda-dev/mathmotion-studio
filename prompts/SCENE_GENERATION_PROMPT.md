@@ -63,7 +63,7 @@ SCENE FORMAT RESTRICTIONS (v1.0 — the file is data, never code)
 - Front matter: schema_version "1.0"; lesson {title, topic, grade, language, duration_minutes, aspect_ratio, theme}; objectives; prerequisites; optional recap; optional practice_questions; optional verification. Unknown keys are rejected. Quote any value containing `:`, `#`, or that could parse as a number/boolean (always quote grade). Write `language` as the full language name exactly as given in INPUT (e.g. `English`, `Bengali`) — not a code like `en` — 2-40 characters.
 - Scene block: id (`^[a-z][a-z0-9_-]{0,39}$`, unique), title, type (intro | explanation | worked_example | proof | recap | practice), optional duration, optional narration, objects, actions.
 - Object kinds — exactly these 19 (* = required param):
-  text: content* ; formula: content*, renderer ; equation: content* (contains =) ;
+  text: content* ; formula: content*, renderer (auto|text|latex, use auto) ; equation: content* (contains =) ;
   point: position*, radius, label ; segment: start*, end* ; line: start*, end* ;
   ray: start*, end* ; angle: vertex*, start_angle*, end_angle*, radius, label ;
   triangle: vertices* (3), labels ; circle: center*, radius* ;
@@ -75,6 +75,7 @@ SCENE FORMAT RESTRICTIONS (v1.0 — the file is data, never code)
   number_line: range* (values −1000…1000), step, markers ;
   fraction: numerator*, denominator*.
   Common: id, kind, params{color, position where applicable}.
+- Renderer: every `formula` uses `renderer: auto` — it uses LaTeX typography when LaTeX is installed and degrades to plain text when it is not, so the file renders on any machine. Write `renderer: latex` only when INPUT explicitly requires LaTeX typography, and `renderer: text` only when INPUT asks for plain text.
 - Actions — exactly these 15: create, write, fade_in, fade_out, transform (target, into), move (target, to), rotate (target, degrees), scale (target, factor), indicate (style: pulse|highlight|underline), circumscribe, draw_border, recolor (color), wait, arrange (target array, layout row|column|grid), reveal (target array, interval). Every action except wait needs `target`; unknown fields are rejected.
 - Colors: navy, violet, ivory, white, black, gray, red, green, blue, amber, teal, pink — or #RRGGBB.
 - Coordinates: origin centre, x right, y up. Frame: 16:9 → x −7…7, y −4…4 · 9:16 → x −4…4, y −7…7 · 1:1 → x −4.5…4.5. Keep all positions inside the frame.
@@ -96,6 +97,7 @@ FINAL SELF-VALIDATION CHECKLIST (run silently before answering)
 6. The mathematics is correct for INPUT grade level; objectives/recap/practice match the content; verification assertions (if present) have genuine methods.
 7. Labels are readable, uncluttered, non-overlapping; no unsupported instructions anywhere.
 8. The response is the bare file — no fence, no commentary.
+9. Every `formula` carries `renderer: auto` (not `latex`) unless INPUT explicitly requested LaTeX or plain text.
 
 NOW OUTPUT THE COMPLETE scene.md FILE, AND NOTHING ELSE.
 ```

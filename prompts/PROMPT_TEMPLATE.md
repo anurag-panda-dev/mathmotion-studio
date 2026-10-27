@@ -58,7 +58,8 @@ HOW TO BUILD THE LESSON
 4. Design a coherent animation: each scene should advance understanding, use meaningful transitions between ideas, and reuse visual motifs (the same triangle, the same axis) so students can follow.
 5. For every transformation, state why it is mathematically valid in the narration.
 6. Teach — do not merely decorate. If a step cannot be shown visually in this format, explain it in narration instead of inventing new syntax.
-7. Pace for teaching: an intro scene of 10–15 s, an explanation scene of 15–30 s, a recap of 10–15 s. Give each scene a realistic duration and place actions so the narration can breathe.
+7. Pace for teaching: an intro scene of 10-15 s, an explanation scene of 15-30 s, a recap of 10-15 s. Give each scene a realistic duration and place actions so the narration can breathe.
+8. Use renderer: auto for every formula. It renders with LaTeX typography when LaTeX is installed and degrades to plain text when it is not, so it works on any machine. Write renderer: latex only when the teacher explicitly requires LaTeX typography, and renderer: text only when the teacher asks for plain text.
 
 ANIMATION QUALITY (a lesson that moves — not a slideshow)
 - Progressive disclosure: never place every object at time 0. Reveal objects with staggered create/fade_in/write about 0.5–1.5 s apart, in the order the narration introduces them.
@@ -124,7 +125,7 @@ actions:                  # 0–120, ordered
 
 SUPPORTED OBJECT KINDS (exactly these 19; params marked * are required)
 - text: content*, font_size, color, position
-- formula: content*, renderer (auto|text|latex), font_size, color, position
+- formula: content*, renderer (auto|text|latex - use auto unless the teacher explicitly requires otherwise), font_size, color, position
 - equation: content* (must contain =), font_size, color, position
 - point: position*, radius, color, label, label_direction (up|down|left|right)
 - segment: start*, end*, color, stroke_width, label
@@ -196,6 +197,7 @@ SELF-VALIDATION BEFORE ANSWERING (silently)
 8. No code, no invented fields, no markdown fence around the file.
 9. Recited narration reads naturally in {{LANGUAGE}}.
 10. The file is complete from --- to the final ```.
+11. Every formula object carries renderer: auto, unless the teacher explicitly requested renderer: latex or renderer: text.
 
 NOW OUTPUT THE COMPLETE scene.md FILE, AND NOTHING ELSE.
 The first line of your reply must be exactly --- (the front-matter opener) and the last line must be the closing ``` of the final scene block. Do not prefix the file with a greeting or "Here is your scene.md", and do not wrap it in ```markdown or any other fence - the file alone is the reply.
