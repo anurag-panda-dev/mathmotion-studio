@@ -1,0 +1,431 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmotion.local/schema/scene-v1.schema.json",
+  "title": "MathMotion Studio scene block v1.0",
+  "description": "Schema for a single ```scene fenced block of a scene.md file. Canonical human-readable specification: prompts/SCENE_FORMAT_SPEC.md (sections 4-7). Status: specification draft; the application parser is not yet implemented.",
+  "type": "object",
+  "required": ["id", "title", "type"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,39}$" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "type": { "enum": ["intro", "explanation", "worked_example", "proof", "recap", "practice"] },
+    "duration": { "type": "number", "minimum": 0.5, "maximum": 300 },
+    "narration": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "objects": {
+      "type": "array",
+      "maxItems": 40,
+      "items": { "$ref": "#/$defs/object" }
+    },
+    "actions": {
+      "type": "array",
+      "maxItems": 120,
+      "items": { "$ref": "#/$defs/action" }
+    }
+  },
+  "$defs": {
+    "objectId": { "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,39}$" },
+    "idList": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 24,
+      "items": { "$ref": "#/$defs/objectId" },
+      "uniqueItems": true
+    },
+    "target": { "oneOf": [{ "$ref": "#/$defs/objectId" }, { "$ref": "#/$defs/idList" }] },
+    "singleTarget": { "$ref": "#/$defs/objectId" },
+    "position": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number", "minimum": -50, "maximum": 50 }
+    },
+    "pair": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number", "minimum": -50, "maximum": 50 }
+    },
+    "valuePair": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number", "minimum": -1000, "maximum": 1000 },
+      "description": "A range of *values* (e.g. a number line from 0 to 360), as opposed to scene coordinates."
+    },
+    "color": { "type": "string", "pattern": "^(navy|violet|ivory|white|black|gray|red|green|blue|amber|teal|pink|#[0-9a-fA-F]{6})$" },
+    "label": { "type": "string", "minLength": 1, "maxLength": 40 },
+    "expression": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[A-Za-z0-9_+\\-*/^()., \\t]+$",
+      "description": "Restricted math grammar (SCENE_FORMAT_SPEC.md section 7.4). Structural checks are enforced by tools/validate_scene.py via an AST allowlist; this pattern only rejects obviously invalid characters up front."
+    },
+    "stroke_width": { "type": "number", "minimum": 1, "maximum": 12 },
+    "fill_opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+    "font_size": { "type": "integer", "minimum": 16, "maximum": 120 },
+
+    "object": {
+      "type": "object",
+      "required": ["id", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/objectId" },
+        "kind": {
+          "enum": [
+            "text", "formula", "equation", "point", "segment", "line", "ray",
+            "angle", "triangle", "circle", "polygon", "square", "rectangle",
+            "vector", "axes", "function_graph", "area_fill", "number_line", "fraction"
+          ]
+        },
+        "params": { "type": "object" }
+      },
+      "allOf": [
+        { "if": { "properties": { "kind": { "const": "text" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsText" } } } },
+        { "if": { "properties": { "kind": { "const": "formula" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsFormula" } } } },
+        { "if": { "properties": { "kind": { "const": "equation" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsEquation" } } } },
+        { "if": { "properties": { "kind": { "const": "point" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsPoint" } } } },
+        { "if": { "properties": { "kind": { "const": "segment" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsSegment" } } } },
+        { "if": { "properties": { "kind": { "const": "line" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsLine" } } } },
+        { "if": { "properties": { "kind": { "const": "ray" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsRay" } } } },
+        { "if": { "properties": { "kind": { "const": "angle" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsAngle" } } } },
+        { "if": { "properties": { "kind": { "const": "triangle" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsTriangle" } } } },
+        { "if": { "properties": { "kind": { "const": "circle" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsCircle" } } } },
+        { "if": { "properties": { "kind": { "const": "polygon" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsPolygon" } } } },
+        { "if": { "properties": { "kind": { "const": "square" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsSquare" } } } },
+        { "if": { "properties": { "kind": { "const": "rectangle" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsRectangle" } } } },
+        { "if": { "properties": { "kind": { "const": "vector" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsVector" } } } },
+        { "if": { "properties": { "kind": { "const": "axes" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsAxes" } } } },
+        { "if": { "properties": { "kind": { "const": "function_graph" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsFunctionGraph" } } } },
+        { "if": { "properties": { "kind": { "const": "area_fill" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsAreaFill" } } } },
+        { "if": { "properties": { "kind": { "const": "number_line" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsNumberLine" } } } },
+        { "if": { "properties": { "kind": { "const": "fraction" } } }, "then": { "properties": { "params": { "$ref": "#/$defs/paramsFraction" } } } }
+      ]
+    },
+
+    "paramsText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content"],
+      "properties": {
+        "content": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "font_size": { "type": "integer", "minimum": 16, "maximum": 120, "default": 36 },
+        "color": { "$ref": "#/$defs/color" },
+        "position": { "$ref": "#/$defs/position" }
+      }
+    },
+    "paramsFormula": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content"],
+      "properties": {
+        "content": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "renderer": { "enum": ["auto", "text", "latex"], "default": "auto" },
+        "font_size": { "type": "integer", "minimum": 16, "maximum": 96, "default": 44 },
+        "color": { "$ref": "#/$defs/color" },
+        "position": { "$ref": "#/$defs/position" }
+      }
+    },
+    "paramsEquation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content"],
+      "properties": {
+        "content": { "type": "string", "minLength": 3, "maxLength": 200, "pattern": "=" },
+        "font_size": { "type": "integer", "minimum": 16, "maximum": 96, "default": 40 },
+        "color": { "$ref": "#/$defs/color" },
+        "position": { "$ref": "#/$defs/position" }
+      }
+    },
+    "paramsPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["position"],
+      "properties": {
+        "position": { "$ref": "#/$defs/position" },
+        "radius": { "type": "number", "minimum": 0.05, "maximum": 0.5, "default": 0.12 },
+        "color": { "$ref": "#/$defs/color" },
+        "label": { "$ref": "#/$defs/label" },
+        "label_direction": { "enum": ["up", "down", "left", "right"], "default": "up" }
+      }
+    },
+    "paramsSegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "$ref": "#/$defs/position" },
+        "end": { "$ref": "#/$defs/position" },
+        "color": { "$ref": "#/$defs/color" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" },
+        "label": { "$ref": "#/$defs/label" }
+      }
+    },
+    "paramsLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "$ref": "#/$defs/position" },
+        "end": { "$ref": "#/$defs/position" },
+        "color": { "$ref": "#/$defs/color" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" },
+        "label": { "$ref": "#/$defs/label" }
+      }
+    },
+    "paramsRay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "$ref": "#/$defs/position" },
+        "end": { "$ref": "#/$defs/position" },
+        "color": { "$ref": "#/$defs/color" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" },
+        "label": { "$ref": "#/$defs/label" }
+      }
+    },
+    "paramsAngle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vertex", "start_angle", "end_angle"],
+      "properties": {
+        "vertex": { "$ref": "#/$defs/position" },
+        "start_angle": { "type": "number", "minimum": -360, "maximum": 360 },
+        "end_angle": { "type": "number", "minimum": -360, "maximum": 360 },
+        "radius": { "type": "number", "minimum": 0.2, "maximum": 2, "default": 0.8 },
+        "color": { "$ref": "#/$defs/color" },
+        "label": { "$ref": "#/$defs/label" }
+      }
+    },
+    "paramsTriangle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vertices"],
+      "properties": {
+        "vertices": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/position" }
+        },
+        "labels": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/label" } },
+        "color": { "$ref": "#/$defs/color" },
+        "fill_opacity": { "$ref": "#/$defs/fill_opacity" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" }
+      }
+    },
+    "paramsCircle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["center", "radius"],
+      "properties": {
+        "center": { "$ref": "#/$defs/position" },
+        "radius": { "type": "number", "minimum": 0.1, "maximum": 10 },
+        "color": { "$ref": "#/$defs/color" },
+        "fill_opacity": { "$ref": "#/$defs/fill_opacity" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" }
+      }
+    },
+    "paramsPolygon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vertices"],
+      "properties": {
+        "vertices": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 12,
+          "items": { "$ref": "#/$defs/position" }
+        },
+        "labels": { "type": "array", "maxItems": 12, "items": { "$ref": "#/$defs/label" } },
+        "color": { "$ref": "#/$defs/color" },
+        "fill_opacity": { "$ref": "#/$defs/fill_opacity" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" }
+      }
+    },
+    "paramsSquare": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "side"],
+      "properties": {
+        "origin": { "$ref": "#/$defs/position" },
+        "side": { "type": "number", "minimum": 0.1, "maximum": 10 },
+        "angle": { "type": "number", "minimum": -360, "maximum": 360, "default": 0 },
+        "color": { "$ref": "#/$defs/color" },
+        "fill_opacity": { "$ref": "#/$defs/fill_opacity" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" }
+      }
+    },
+    "paramsRectangle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "width", "height"],
+      "properties": {
+        "origin": { "$ref": "#/$defs/position" },
+        "width": { "type": "number", "minimum": 0.1, "maximum": 12 },
+        "height": { "type": "number", "minimum": 0.1, "maximum": 12 },
+        "angle": { "type": "number", "minimum": -360, "maximum": 360, "default": 0 },
+        "color": { "$ref": "#/$defs/color" },
+        "fill_opacity": { "$ref": "#/$defs/fill_opacity" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" }
+      }
+    },
+    "paramsVector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "$ref": "#/$defs/position" },
+        "end": { "$ref": "#/$defs/position" },
+        "color": { "$ref": "#/$defs/color" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" },
+        "label": { "$ref": "#/$defs/label" }
+      }
+    },
+    "paramsAxes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x_range": { "$ref": "#/$defs/pair" },
+        "y_range": { "$ref": "#/$defs/pair" },
+        "grid": { "type": "boolean", "default": false },
+        "include_numbers": { "type": "boolean", "default": true },
+        "x_label": { "$ref": "#/$defs/label" },
+        "y_label": { "$ref": "#/$defs/label" }
+      }
+    },
+    "paramsFunctionGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expression"],
+      "properties": {
+        "expression": { "$ref": "#/$defs/expression" },
+        "domain": { "$ref": "#/$defs/pair" },
+        "color": { "$ref": "#/$defs/color" },
+        "stroke_width": { "$ref": "#/$defs/stroke_width" },
+        "samples": { "type": "integer", "minimum": 20, "maximum": 2000, "default": 400 }
+      }
+    },
+    "paramsAreaFill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expression", "domain"],
+      "properties": {
+        "expression": { "$ref": "#/$defs/expression" },
+        "domain": { "$ref": "#/$defs/pair" },
+        "color": { "$ref": "#/$defs/color" },
+        "fill_opacity": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.35 }
+      }
+    },
+    "paramsNumberLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["range"],
+      "properties": {
+        "range": { "$ref": "#/$defs/valuePair" },
+        "step": { "type": "number", "minimum": 0.05, "maximum": 100, "default": 1 },
+        "markers": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "required": ["value"],
+            "additionalProperties": false,
+            "properties": {
+              "value": { "type": "number" },
+              "label": { "$ref": "#/$defs/label" },
+              "color": { "$ref": "#/$defs/color" }
+            }
+          }
+        },
+        "color": { "$ref": "#/$defs/color" },
+        "label": { "$ref": "#/$defs/label" }
+      }
+    },
+    "paramsFraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["numerator", "denominator"],
+      "properties": {
+        "numerator": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "denominator": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "font_size": { "type": "integer", "minimum": 16, "maximum": 120, "default": 48 },
+        "color": { "$ref": "#/$defs/color" },
+        "position": { "$ref": "#/$defs/position" },
+        "label": { "$ref": "#/$defs/label" }
+      }
+    },
+
+    "action": {
+      "type": "object",
+      "required": ["action"],
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "create", "write", "fade_in", "fade_out", "transform", "move",
+            "rotate", "scale", "indicate", "circumscribe", "draw_border",
+            "recolor", "wait", "arrange", "reveal"
+          ]
+        },
+        "target": {},
+        "at": { "type": "number", "minimum": 0, "maximum": 600 },
+        "duration": { "type": "number", "minimum": 0.1, "maximum": 60 },
+        "into": { "$ref": "#/$defs/objectId" },
+        "to": { "$ref": "#/$defs/position" },
+        "degrees": { "type": "number", "minimum": -360, "maximum": 360 },
+        "factor": { "type": "number", "minimum": 0.05, "maximum": 20 },
+        "style": { "enum": ["pulse", "highlight", "underline"] },
+        "color": { "$ref": "#/$defs/color" },
+        "layout": { "enum": ["row", "column", "grid"] },
+        "gap": { "type": "number", "minimum": 0.1, "maximum": 5 },
+        "interval": { "type": "number", "minimum": 0.1, "maximum": 10 }
+      },
+      "allOf": [
+        { "if": { "properties": { "action": { "const": "wait" } } }, "then": {} },
+        {
+          "if": { "properties": { "action": { "enum": ["create", "fade_in", "fade_out"] } } },
+          "then": { "required": ["target"], "properties": { "target": { "$ref": "#/$defs/target" } } }
+        },
+        {
+          "if": { "properties": { "action": { "const": "reveal" } } },
+          "then": {
+            "required": ["target"],
+            "properties": { "target": { "type": "array", "minItems": 1, "maxItems": 24, "items": { "$ref": "#/$defs/objectId" }, "uniqueItems": true } }
+          }
+        },
+        {
+          "if": { "properties": { "action": { "const": "arrange" } } },
+          "then": {
+            "required": ["target", "layout"],
+            "properties": {
+              "target": { "type": "array", "minItems": 2, "maxItems": 24, "items": { "$ref": "#/$defs/objectId" }, "uniqueItems": true }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "action": { "const": "transform" } } },
+          "then": { "required": ["target", "into"], "properties": { "target": { "$ref": "#/$defs/singleTarget" } } }
+        },
+        {
+          "if": { "properties": { "action": { "const": "move" } } },
+          "then": { "required": ["target", "to"], "properties": { "target": { "$ref": "#/$defs/singleTarget" } } }
+        },
+        {
+          "if": { "properties": { "action": { "enum": ["rotate", "scale"] } } },
+          "then": { "required": ["target"], "properties": { "target": { "$ref": "#/$defs/singleTarget" } } }
+        },
+        {
+          "if": { "properties": { "action": { "const": "recolor" } } },
+          "then": { "required": ["target", "color"], "properties": { "target": { "$ref": "#/$defs/singleTarget" } } }
+        },
+        {
+          "if": { "properties": { "action": { "enum": ["write", "indicate", "circumscribe", "draw_border"] } } },
+          "then": { "required": ["target"], "properties": { "target": { "$ref": "#/$defs/singleTarget" } } }
+        }
+      ]
+    }
+  }
+}

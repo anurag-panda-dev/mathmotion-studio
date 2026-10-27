@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* MathMotion Studio design tokens                                     */
+/*                                                                     */
+/* Canonical brand hexes are measured and normative (branding/         */
+/* palette.json). UI support colors follow docs/UI_UX_SPEC.md §1.1.    */
+/* Dark-theme surfaces that are not in palette.json (elevated navy,    */
+/* its border and muted ink) are derived here purely for elevation —   */
+/* the navy/ivory/violet identity is never altered.                    */
+/* ------------------------------------------------------------------ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Brand trio */
+  --brand-navy: #061830;
+  --brand-violet: #6a4aee;
+  --brand-violet-hover: #5638d6;
+  --brand-violet-subtle: #ede9fe;
+  --brand-ivory: #f1f3ea;
+
+  /* UI support (light) */
+  --color-paper: #ffffff;
+  --color-mist: #f4f6fa;
+  --color-line: #e2e6ef;
+  --color-slate: #5a6478;
+
+  /* Semantic light-theme tokens */
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #f4f6fa;
+  --surface-sunken: #f4f6fa;
+  --foreground: #061830;
+  --muted-foreground: #5a6478;
+  --border: #e2e6ef;
+  --input: #e2e6ef;
+  --ring: #6a4aee;
+
+  --primary: #6a4aee;
+  --primary-hover: #5638d6;
+  --primary-foreground: #f1f3ea;
+  --primary-subtle: #ede9fe;
+  --primary-subtle-foreground: #43309c;
+
+  --success: #2e9e6b;
+  --success-foreground: #ffffff;
+  --success-subtle: #e6f5ee;
+  --success-subtle-foreground: #1c6b47;
+
+  --warning: #b26a00;
+  --warning-foreground: #ffffff;
+  --warning-subtle: #fdf1de;
+  --warning-subtle-foreground: #8a5200;
+
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+  --destructive-subtle: #fdeceb;
+  --destructive-subtle-foreground: #93271c;
+
+  --neutral-subtle: #eef1f7;
+  --neutral-subtle-foreground: #3c465c;
+
+  --overlay: rgba(6, 24, 48, 0.45);
+}
+
+.dark {
+  /* Dark surfaces are derived from navy for subtle elevation only. */
+  --background: #061830;
+  --surface: #0a1f3c;
+  --surface-alt: #0f2949;
+  --surface-sunken: #041224;
+  --foreground: #f1f3ea;
+  --muted-foreground: #a3aec2;
+  --border: #1c3457;
+  --input: #1c3457;
+  --ring: #8f77f2;
+
+  --primary: #6a4aee;
+  --primary-hover: #7d61f2;
+  --primary-foreground: #f1f3ea;
+  --primary-subtle: #1d1b3f;
+  --primary-subtle-foreground: #c3b6fb;
+
+  --success: #2e9e6b;
+  --success-foreground: #ffffff;
+  --success-subtle: #0c2f24;
+  --success-subtle-foreground: #7fd3ac;
+
+  --warning: #b26a00;
+  --warning-foreground: #ffffff;
+  --warning-subtle: #33230a;
+  --warning-subtle-foreground: #e8b467;
+
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+  --destructive-subtle: #34150f;
+  --destructive-subtle-foreground: #f0a79c;
+
+  --neutral-subtle: #14294a;
+  --neutral-subtle-foreground: #b7c1d4;
+
+  --overlay: rgba(2, 9, 20, 0.65);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-primary-subtle-foreground: var(--primary-subtle-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-foreground: var(--success-subtle-foreground);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-subtle-foreground: var(--warning-subtle-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-destructive-subtle-foreground: var(--destructive-subtle-foreground);
+
+  --color-neutral-subtle: var(--neutral-subtle);
+  --color-neutral-subtle-foreground: var(--neutral-subtle-foreground);
+  --color-overlay: var(--overlay);
+
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-violet: var(--brand-violet);
+  --color-brand-violet-subtle: var(--brand-violet-subtle);
+  --color-brand-ivory: var(--brand-ivory);
+  --color-paper: var(--color-paper);
+  --color-mist: var(--color-mist);
+  --color-line: var(--color-line);
+  --color-slate: var(--color-slate);
+
+  --radius-card: 0.875rem;
+  --radius-control: 0.625rem;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif;
+  --font-mono:
+    ui-monospace, "Cascadia Mono", "Cascadia Code", "JetBrains Mono", Consolas,
+    "Courier New", monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Visible, high-contrast focus indicators on every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@keyframes indeterminate-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  /* Indeterminate render progress: a sweeping bar, never a fake percentage. */
+  .animate-indeterminate {
+    animation: indeterminate-slide 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 180ms ease-out;
+  }
+
+  /* Subtle custom scrollbar that adapts to the theme. */
+  .scrollbar-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}

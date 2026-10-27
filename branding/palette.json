@@ -1,0 +1,78 @@
+{
+  "name": "MathMotion Studio palette",
+  "version": 1,
+  "updated": "2026-10-27",
+  "notes": "Brand colors are MEASURED from the raster references in assets/ (pixel sampling with Pillow). The scene_format section is normative for scene.md color names and must stay in sync with prompts/SCENE_FORMAT_SPEC.md section 7.2 and the validator palette in tools/validate_scene.py.",
+  "brand": {
+    "navy": {
+      "hex": "#061830",
+      "source": "measured",
+      "observed": ["#061830 — dark logo background, app icon background", "#071A32 — light logo wordmark ink (same family, export noise)"],
+      "role": "Primary ink and dark surface; the near-black midnight navy of the identity."
+    },
+    "violet": {
+      "hex": "#6A4AEE",
+      "source": "measured",
+      "observed": ["#6B4BEC — trajectory in the light logo", "#5946E4 — mark in the dark logo", "#5C46E7 — app icon border and trajectory"],
+      "note": "Single canonical value. Dark-context rasters render 4–8 steps deeper, which is within export/compositing tolerance; SVG variants use this canonical value everywhere.",
+      "role": "Accent: motion trajectory, emphasis, highlights."
+    },
+    "ivory": {
+      "hex": "#F1F3EA",
+      "source": "measured",
+      "observed": ["#E9EADC..#F3F6EF — dark logo wordmark and app icon mark"],
+      "note": "Sampled across glyph cores and anti-aliased edges; canonical value is the rounded midpoint.",
+      "role": "Light ink on dark surfaces; the crisp ivory of the identity."
+    }
+  },
+  "scene_format": {
+    "navy": "#061830",
+    "violet": "#6A4AEE",
+    "ivory": "#F1F3EA",
+    "white": "#FFFFFF",
+    "black": "#000000",
+    "gray": "#8A93A6",
+    "red": "#D0402E",
+    "green": "#2E9E6B",
+    "blue": "#2E6FD0",
+    "amber": "#E0A126",
+    "teal": "#1F9E9E",
+    "pink": "#D0509E",
+    "source_note": "navy/violet/ivory are measured brand values. The other nine are defined supporting colors for diagrams and multi-series graphs — they are not logo-derived and carry no external licensing claims."
+  },
+  "themes": {
+    "midnight": {
+      "scene_theme_name": "midnight",
+      "description": "Default render theme: dark scenes.",
+      "background": "#061830",
+      "ink": "#F1F3EA",
+      "accent": "#6A4AEE"
+    },
+    "ivory": {
+      "scene_theme_name": "ivory",
+      "description": "Light render theme.",
+      "background": "#FFFFFF",
+      "ink": "#061830",
+      "accent": "#6A4AEE"
+    }
+  },
+  "ui_support": {
+    "status": "planned",
+    "note": "Neutral UI colors for the future application interface (MASTER-PROMPT section 3). Not implemented anywhere yet — no UI exists.",
+    "paper": "#FFFFFF",
+    "mist": "#F4F6FA",
+    "line": "#E2E6EF",
+    "slate": "#5A6478",
+    "success": "#2E9E6B",
+    "warning": "#B26A00",
+    "error": "#C0392B"
+  },
+  "contrast_wcag_2_1": {
+    "method": "relative luminance ratios computed from the hex values above (WCAG 2.1 formula)",
+    "navy_on_white": "17.7:1 (AAA body text)",
+    "ivory_on_navy": "15.8:1 (AAA body text)",
+    "violet_on_white": "5.5:1 (AA body text, AAA large text)",
+    "violet_on_navy": "3.2:1 (large text and UI components only — not body text)",
+    "guidance": "For text on navy, use ivory, never violet. For text on white, navy is preferred; violet is acceptable at ≥18.66px bold or ≥24px."
+  }
+}

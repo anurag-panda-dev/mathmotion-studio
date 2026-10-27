@@ -1,0 +1,55 @@
+# --- Python / virtual environments -----------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Local data & state (created at runtime) -------------------------------
+data/*
+!data/.gitkeep
+output/*
+!output/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
+run-state.json
+
+# --- Generated videos / media ----------------------------------------------
+*.mp4
+*.mov
+*.webm
+*.gif
+media/
+
+# --- Logs -------------------------------------------------------------------
+*.log
+logs/
+
+# --- Frontend build & dependencies -----------------------------------------
+node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+
+# --- Editor / OS noise ------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# --- Stray root-level scratch files ------------------------------------------
+/bn_test
+/test
+
+# --- Prompt files ------------------------------------------------------------
+DOCS-ASSETS-PROMPT.md 
+MASTER-PROMPT.md
+
+

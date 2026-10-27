@@ -1,0 +1,11 @@
+# MathMotion Studio backend — rendering dependency (installed separately).
+#
+# Manim Community Edition is required only for rendering videos. The backend,
+# the validation pipeline, the prompt generator, and the test suite all work
+# without it; dependency diagnostics report it as "unavailable" instead of
+# failing. run.ps1 installs this file after requirements.txt and treats a
+# failure here as a warning, not a fatal error.
+#
+# Kept as a range until a specific release is verified end-to-end on the
+# target machine (MASTER-PROMPT.md section 2 forbids pinning before testing).
+manim>=0.19.0,<0.20

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathmotion.local/schema/lesson-metadata-v1.schema.json",
+  "title": "MathMotion Studio lesson front matter v1.0",
+  "description": "Schema for the YAML front matter of a scene.md file. Canonical human-readable specification: prompts/SCENE_FORMAT_SPEC.md (section 3). Status: specification draft; the application parser is not yet implemented.",
+  "type": "object",
+  "required": ["schema_version", "lesson"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "description": "Scene format version. See SCENE_FORMAT_SPEC.md section 9 for versioning rules."
+    },
+    "lesson": {
+      "type": "object",
+      "required": ["title", "topic", "grade", "language"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "topic": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "grade": { "type": "string", "minLength": 1, "maxLength": 24 },
+        "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})?$" },
+        "duration_minutes": { "type": "number", "minimum": 1, "maximum": 60, "default": 5 },
+        "aspect_ratio": { "enum": ["16:9", "9:16", "1:1"], "default": "16:9" },
+        "theme": { "enum": ["midnight", "ivory"], "default": "midnight" }
+      }
+    },
+    "objectives": {
+      "type": "array",
+      "maxItems": 10,
+      "items": { "type": "string", "minLength": 1, "maxLength": 200 }
+    },
+    "prerequisites": {
+      "type": "array",
+      "maxItems": 10,
+      "items": { "type": "string", "minLength": 1, "maxLength": 200 }
+    },
+    "recap": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "practice_questions": {
+      "type": "array",
+      "maxItems": 12,
+      "items": { "type": "string", "minLength": 1, "maxLength": 300 }
+    },
+    "verification": {
+      "type": "array",
+      "maxItems": 10,
+      "items": { "$ref": "#/$defs/verification" }
+    }
+  },
+  "$defs": {
+    "verification": {
+      "type": "object",
+      "required": ["id", "kind", "description", "expression", "expected"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,39}$" },
+        "kind": { "enum": ["numeric", "symbolic"] },
+        "description": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "expression": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "expected": { "type": "number" },
+        "tolerance": { "type": "number", "exclusiveMinimum": 0, "default": 1e-9 },
+        "subs": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      }
+    }
+  }
+}
